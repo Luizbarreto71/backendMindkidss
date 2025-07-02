@@ -9,7 +9,7 @@ const app = express();
 
 // Configuração do CORS para permitir apenas o front-end
 app.use(cors({
-  origin: 'http://localhost:5173', // endereço do seu front-end
+  origin: 'https://mindkidss.com', // endereço do seu front-end
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true // caso precise enviar cookies no futuro
 }));
@@ -23,3 +23,9 @@ app.use('/api', authRoutes);
 // Inicializa o servidor
 const PORT = 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+
+// Adicione estas linhas no seu server.js
+const paymentRoutes = require('./routes/paymentRoutes');
+
+// Depois de criar a app do Express
+app.use('/api/pagamentos', paymentRoutes);
