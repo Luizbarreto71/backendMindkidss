@@ -1,10 +1,10 @@
 // routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
-const auth = require('../controllers/authController');
+const paymentController = require('../controllers/paymentController');
 
-router.post('/register', auth.register);
-router.post('/login', auth.login);
-router.post('/confirmar-pagamento', auth.confirmarPagamento);
+router.post('/criar-pagamento', paymentController.criarPagamento);
+router.get('/verificar-pagamento/:paymentId', paymentController.verificarPagamento);
+router.post('/webhook', paymentController.webhook);
 
 module.exports = router;
