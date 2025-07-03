@@ -7,17 +7,23 @@ exports.register = (req, res) => {
   const { nome, email, senha } = req.body;
   const hash = bcrypt.hashSync(senha, 10);
 
-  db.query("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)", [nome, email, hash], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ msg: "Usuário cadastrado!" });
-  });
+  db.query(
+    "INSERT INTO usuarios (nome, email, senha, pago) VALUES (?, ?, ?, 0)", 
+    [nome, email, hash], 
+    (err) => {
+      if (err) return res.status(500).json({ error: err });
+      res.json({ msg: "Usuário cadastrado!" });
+    }
+  );
 };
 
 exports.login = (req, res) => {
   const { email, senha } = req.body;
 
   db.query("SELECT * FROM usuarios WHERE email = ?", [email], (err, results) => {
-    if (err || results.length === 0) return res.status(401).json({ msg: "Usuário não encontrado" });
+    if (err || results.length === 0) {
+      return res.status(401).json({ msg: "Usuário não encontrado" });
+    }
 
     const user = results[0];
 
@@ -39,6 +45,7 @@ exports.login = (req, res) => {
   });
 };
 
+// Mantemos essa função simples apenas para admin
 exports.confirmarPagamento = (req, res) => {
   const { email } = req.body;
 
